@@ -32,6 +32,12 @@ class SignUpActivity : AppCompatActivity() {
 
         val googleButton = findViewById<ImageView>(R.id.google_button)
         googleButton.setOnClickListener{signIn()}
+
+        val nextButton = findViewById<Button>(R.id.next_button)
+        nextButton.setOnClickListener{
+            val openDietaryPage = Intent(this, FoodRestrictionActivity::class.java)
+            startActivity(openDietaryPage)
+        }
     }
 
     private fun signIn() {
