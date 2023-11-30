@@ -1,4 +1,4 @@
-package com.bignerdranch.android.logintest
+package com.bignerdranch.android.bitebalance
 
 import org.junit.Test
 

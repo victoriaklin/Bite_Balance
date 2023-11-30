@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.bignerdranch.android.logintest"
-    compileSdk = 33
+    namespace = "com.bignerdranch.android.bitebalance"
+    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.bignerdranch.android.logintest"
+        applicationId = "com.bignerdranch.android.bitebalance"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -49,4 +49,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("androidx.cardview:cardview:1.0.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
 }

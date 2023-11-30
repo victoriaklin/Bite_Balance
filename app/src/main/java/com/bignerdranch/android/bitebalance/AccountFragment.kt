@@ -1,4 +1,4 @@
-package com.bignerdranch.android.logintest
+package com.bignerdranch.android.bitebalance
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

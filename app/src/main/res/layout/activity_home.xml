@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper"
-    tools:context=".HomeActivity">
+    tools:context="com.bignerdranch.android.bitebalance.HomeActivity">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"

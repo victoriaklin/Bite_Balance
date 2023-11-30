@@ -18,7 +18,7 @@
             android:name=".ForgotPassActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name="com.bignerdranch.android.bitebalance.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity"

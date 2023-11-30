@@ -1,12 +1,11 @@
-package com.bignerdranch.android.logintest
+package com.bignerdranch.android.bitebalance
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.bignerdranch.android.bitebalance.R
 
 class HomeActivity : AppCompatActivity() {
 
