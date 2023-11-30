@@ -15,6 +15,9 @@
         android:theme="@style/Theme.LoginTest"
         tools:targetApi="31">
         <activity
+            android:name=".DietaryRestrictionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPassActivity"
             android:exported="false" />
         <activity
