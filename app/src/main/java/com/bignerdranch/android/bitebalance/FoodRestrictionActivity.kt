@@ -3,7 +3,9 @@ package com.bignerdranch.android.bitebalance
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Button
+import android.widget.Toast
 
 class FoodRestrictionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,7 +14,9 @@ class FoodRestrictionActivity : AppCompatActivity() {
 
         val createAccButton = findViewById<Button>(R.id.createAccount_button)
         createAccButton.setOnClickListener{
-            // toast that says "Welcome to Bite Balance!"
+            val toast = Toast.makeText(this, "Welcome to Bite Balance!", Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
             val openHomePage = Intent(this, HomeActivity::class.java)
             startActivity(openHomePage)
         }
