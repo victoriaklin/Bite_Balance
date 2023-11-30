@@ -36,6 +36,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(openForgotPage)
         }
 
+        val loginButton = findViewById<Button>(R.id.login_button)
+        // if username and password match
+        // show toast that says "Login successful!"
+        // if username and password dont match
+        // show toast that says "Incorrect username or password"
+        loginButton.setOnClickListener{
+            val openHomePage = Intent(this, HomeActivity::class.java)
+            startActivity(openHomePage)
+        }
+
 
         // Use the below for the other activities as well
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
