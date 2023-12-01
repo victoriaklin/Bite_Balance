@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
@@ -54,6 +55,7 @@ class SignUpActivity : AppCompatActivity() {
             // a listener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
+
         }
     }
 
@@ -63,7 +65,11 @@ class SignUpActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
-            Toast.makeText(this, "Logged in successfully!", Toast.LENGTH_LONG).show()
+            var x = Toast.makeText(this, "Logged in successfully!", Toast.LENGTH_LONG)
+            x.setGravity(Gravity.CENTER, 0, 0)
+            x.show()
+            val openHomePage = Intent(this, HomeActivity::class.java)
+            startActivity(openHomePage)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

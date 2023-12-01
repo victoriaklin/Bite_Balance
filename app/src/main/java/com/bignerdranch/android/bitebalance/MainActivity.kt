@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity() {
 
             // Signed in successfully, show authenticated UI.
             Toast.makeText(this, "Logged in successfully!", Toast.LENGTH_LONG).show()
+            val openHomePage = Intent(this, HomeActivity::class.java)
+            startActivity(openHomePage)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
