@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper"
-    tools:context=".FoodRestrictionActivity">
+    tools:context="com.bignerdranch.android.bitebalance.FoodRestrictionActivity">
 
     <TextView
+        android:id="@+id/soy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Dietary Restrictions"
         android:textSize="30dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
@@ -21,6 +23,7 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <CheckBox
+        android:id="@+id/lactose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lactose intolerant"
@@ -33,6 +36,7 @@
         app:layout_constraintVertical_bias="0.102" />
 
     <CheckBox
+        android:id="@+id/vegetarian"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vegetarian"
@@ -45,6 +49,7 @@
         app:layout_constraintVertical_bias="0.172" />
 
     <CheckBox
+        android:id="@+id/vegan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vegan"
@@ -57,6 +62,7 @@
         app:layout_constraintVertical_bias="0.243" />
 
     <CheckBox
+        android:id="@+id/gluten"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gluten-free"
@@ -69,8 +75,9 @@
         app:layout_constraintVertical_bias="0.313" />
 
     <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/kosher"
+        android:layout_width="99dp"
+        android:layout_height="50dp"
         android:text="Kosher"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,17 +91,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Allergies"
-        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.44" />
+        app:layout_constraintVertical_bias="0.453" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/tree_nuts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tree nuts"
@@ -104,10 +112,10 @@
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.493" />
+        app:layout_constraintVertical_bias="0.512" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/peanuts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Peanuts"
@@ -117,50 +125,51 @@
         app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.563" />
+        app:layout_constraintVertical_bias="0.582" />
 
     <CheckBox
+        android:id="@+id/sesame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="236dp"
         android:text="Sesame"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2"
         app:layout_constraintVertical_bias="0.0" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
         android:text="Soy"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.068"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2"
-        app:layout_constraintVertical_bias="0.192" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
+        android:id="@+id/eggs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="188dp"
         android:text="Eggs"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.073"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2"
-        app:layout_constraintVertical_bias="0.384" />
+        app:layout_constraintVertical_bias="0.405" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/createAccount_button"
+        android:id="@+id/done_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
-        android:text="Create Account"
+        android:text="Done"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

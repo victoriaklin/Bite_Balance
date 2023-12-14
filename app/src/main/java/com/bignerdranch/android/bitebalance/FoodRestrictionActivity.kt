@@ -12,11 +12,8 @@ class FoodRestrictionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_restriction)
 
-        val createAccButton = findViewById<Button>(R.id.createAccount_button)
-        createAccButton.setOnClickListener{
-            val toastt = Toast.makeText(this, "Welcome to Bite Balance!", Toast.LENGTH_LONG)
-            toastt.setGravity(Gravity.CENTER, 0, 0)
-            toastt.show()
+        val done = findViewById<Button>(R.id.done_button)
+        done.setOnClickListener{
             val openHomePage = Intent(this, HomeActivity::class.java)
             startActivity(openHomePage)
         }

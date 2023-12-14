@@ -24,29 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val newAccountButton = findViewById<Button>(R.id.noaccount_button)
-        newAccountButton.setOnClickListener{
-            val openSignUpPage = Intent(this, SignUpActivity::class.java)
-            startActivity(openSignUpPage)
-        }
-
-        val forgotPassButton = findViewById<TextView>(R.id.forgotpass)
-        forgotPassButton.setOnClickListener {
-            val openForgotPage = Intent(this, ForgotPassActivity::class.java)
-            startActivity(openForgotPage)
-        }
-
-        val loginButton = findViewById<Button>(R.id.login_button)
-        // if username and password match
-        // show toast that says "Login successful!"
-        // if username and password dont match
-        // show toast that says "Incorrect username or password"
-        loginButton.setOnClickListener{
-            val openHomePage = Intent(this, HomeActivity::class.java)
-            startActivity(openHomePage)
-        }
-
-
         // Use the below for the other activities as well
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
