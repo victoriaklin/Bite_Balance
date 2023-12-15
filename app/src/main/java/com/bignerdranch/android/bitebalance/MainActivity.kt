@@ -28,12 +28,18 @@ class MainActivity : AppCompatActivity() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
+
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         val googleButton = findViewById<ImageView>(R.id.google_button)
         googleButton.setOnClickListener{signIn()}
 
+        val createAccountButton = findViewById<Button>(R.id.noaccount_button)
+        createAccountButton.setOnClickListener{
+            val intent = Intent(this, FoodRestrictionActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
