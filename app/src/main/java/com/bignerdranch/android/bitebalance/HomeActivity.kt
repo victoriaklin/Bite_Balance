@@ -73,34 +73,43 @@ class HomeActivity : AppCompatActivity() {
         private const val APP_KEY = "883ec561ba2fc8d99515e7a58fc6455e"
     }
     private fun fetchRecipes(query: String) {
-        lifecycleScope.launch {
-            try {
-                val response = RecipeApi.retrofitService.getRecipes(APP_ID, APP_KEY, "public", true)
-                if (response.isSuccessful && response.body() != null) {
-                    val apiResponse = response.body()!!
-                    val stringBuilder = StringBuilder()
-
-                    apiResponse.hits.forEach { hit ->
-                        val recipe = hit.recipe
-                        val caloriesRounded = recipe.calories.roundToInt()
-                        stringBuilder.append("${recipe.label}: $caloriesRounded calories\n")
+            lifecycleScope.launch {
+                try {
+                    var isRandom = true
+                    if(query.isNotEmpty()){
+                        isRandom = false
                     }
+                    val response =
+                        RecipeApi.retrofitService.getRecipes(query, APP_ID, APP_KEY, "public", isRandom)
+                    if (response.isSuccessful && response.body() != null) {
+                        val apiResponse = response.body()!!
+                        val stringBuilder = StringBuilder()
 
-                    val recipeText = if (stringBuilder.isNotEmpty()) stringBuilder.toString() else "No recipes found"
+                        apiResponse.hits.forEach { hit ->
+                            val recipe = hit.recipe
+                            val caloriesRounded = recipe.calories.roundToInt()
+                            stringBuilder.append("${recipe.label}: $caloriesRounded calories\n")
+                        }
 
-                    runOnUiThread {
-                        textViewRecipe.text = recipeText
+                        val recipeText =
+                            if (stringBuilder.isNotEmpty()) stringBuilder.toString() else "No recipes found"
+
+                        runOnUiThread {
+                            textViewRecipe.text = recipeText
+                        }
+                    } else {
+                        runOnUiThread {
+                            textViewRecipe.text = "No recipes found"
+                        }
+                        Log.e(
+                            "API Error",
+                            "Response not successful: ${response.errorBody()?.string()}"
+                        )
                     }
-                } else {
-                    runOnUiThread {
-                        textViewRecipe.text = "No recipes found"
-                    }
-                    Log.e("API Error", "Response not successful: ${response.errorBody()?.string()}")
+                } catch (e: Exception) {
+                    Log.e("API Error", "Exception: ${e.message}")
                 }
-            }  catch (e: Exception) {
-                Log.e("API Error", "Exception: ${e.message}")
             }
-        }
 
         }
 

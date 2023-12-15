@@ -45,6 +45,15 @@ interface RecipeApiService {
     }
     @GET(".")
     suspend fun getRecipes(
+        @Query("q") query: String,
+        @Query("app_id") appId: String,
+        @Query("app_key") appKey: String,
+        @Query("type") type: String,
+        @Query("random") random: Boolean,
+        @Query("field") fields: List<String> = FIELDS,
+        @Query("diet") diet: List<String> = DIET
+    ): Response<ApiResponse>
+    suspend fun getRecipes2(
         // @Query("q") query: String,
         @Query("app_id") appId: String,
         @Query("app_key") appKey: String,

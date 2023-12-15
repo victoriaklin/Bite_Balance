@@ -49,7 +49,7 @@
 
     <TextView
         android:id="@+id/textViewRecipe"
-        android:text="Hello"
+        android:text="Recipes go here."
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:flow_horizontalBias="0.5"
