@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.android.bitebalance.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -23,9 +25,20 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var recipeButton: Button
     private lateinit var textViewRecipe: TextView
+    private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment()
+
+        binding.bottomNavigationView.setOnItemListener(){
+
+            when(it.itemId){
+
+                R.id.savedRecipes -> replaceFragment(SavedRecipes())
+            }
+        }
 
         // Set up recyclerView
         recyclerView = findViewById(R.id.recyclerView)
@@ -59,14 +72,14 @@ class HomeActivity : AppCompatActivity() {
         // Display recipe
         textViewRecipe = findViewById(R.id.textViewRecipe)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        val menuItem = bottomNavigationView.menu.findItem(R.id.settings)
-        menuItem.setOnMenuItemClickListener {
-            val openSettingsPage = Intent(this@HomeActivity, SettingsActivity::class.java)
-            startActivity(openSettingsPage)
-            true
-        }
+    }
 
+    private fun replaceFragment(fragment : Fragment){
+
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frameLayout, fragment)
+        fragmentTransaction.commit()
     }
     companion object {
         private const val APP_ID = "b849eb52"
