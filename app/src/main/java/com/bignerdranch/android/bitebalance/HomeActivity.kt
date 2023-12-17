@@ -30,14 +30,18 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment()
 
         binding.bottomNavigationView.setOnItemListener(){
 
             when(it.itemId){
 
                 R.id.savedRecipes -> replaceFragment(SavedRecipes())
+
+                else -> {
+
+                }
             }
+            true
         }
 
         // Set up recyclerView
