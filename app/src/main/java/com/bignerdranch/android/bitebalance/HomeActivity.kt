@@ -30,12 +30,15 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        replaceFragment(Home())
 
         binding.bottomNavigationView.setOnItemListener(){
 
             when(it.itemId){
 
                 R.id.savedRecipes -> replaceFragment(SavedRecipes())
+                R.id.home -> replaceFragment(Home())
+                R.id.search -> replaceFragment(Search())
 
                 else -> {
 
