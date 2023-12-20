@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.home -> replaceFragment(Home())
                 R.id.search -> replaceFragment(Search())
 
-                else -> {
+                else ->{
 
                 }
             }
