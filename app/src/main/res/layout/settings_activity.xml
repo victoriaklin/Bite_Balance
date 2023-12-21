@@ -31,36 +31,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.024" />
 
-    <TextView
-        android:id="@+id/change_dietary"
-        android:layout_width="306dp"
-        android:layout_height="48dp"
-        android:background="#30ffffff"
-        android:drawablePadding="10dp"
-        android:text="Change Dietary Restrictions"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.238"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.197" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signOutButton"
-        android:layout_width="146dp"
-        android:layout_height="53dp"
-        android:backgroundTint="@color/black"
-        android:text="Sign out"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.918" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

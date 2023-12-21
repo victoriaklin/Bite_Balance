@@ -4,6 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -36,4 +39,27 @@ class SettingsActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.settings_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.changeRestrictions -> {
+                // Handle change dietary restrictions click
+                true
+            }
+            R.id.signOut -> {
+                // Handle sign out click
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+
 }
