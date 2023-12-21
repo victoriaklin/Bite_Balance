@@ -14,49 +14,41 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.android.bitebalance.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.bignerdranch.android.bitebalance.databinding.ActivityHomeBinding
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var searchView: SearchView
-    private lateinit var recipeButton: Button
+    //private lateinit var searchView: SearchView
+    //private lateinit var recipeButton: Button
     private lateinit var textViewRecipe: TextView
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding : ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(Home())
 
-        binding.bottomNavigationView.setOnItemListener(){
-
-            when(it.itemId){
-
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
                 R.id.savedRecipes -> replaceFragment(SavedRecipes())
                 R.id.home -> replaceFragment(Home())
                 R.id.search -> replaceFragment(Search())
 
-                else ->{
-
-                }
+                else -> false
             }
             true
         }
 
-        // Set up recyclerView
+   /*     // Doesnt work anymore
         recyclerView = findViewById(R.id.recyclerView)
         searchView = findViewById(R.id.searchView)
 
         // Initialize RecyclerView with empty List
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = RecipeAdapter(emptyList())
-
-        // Generate recipe buttons
-        recipeButton = findViewById(R.id.recipe_button)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -75,10 +67,7 @@ class HomeActivity : AppCompatActivity() {
         recipeButton.setOnClickListener {
             onRecipeButtonClick()
         }
-
-        // Display recipe
-        textViewRecipe = findViewById(R.id.textViewRecipe)
-
+*/
     }
 
     private fun replaceFragment(fragment : Fragment){
@@ -133,17 +122,6 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
-//        lifecycleScope.launch {
-//            val response = RecipeApi.retrofitService.getRecipes(query, "b849eb52", "883ec561ba2fc8d99515e7a58fc6455e")
-//            if (response.isSuccessful && response.body() != null) {
-//                val recipes = response.body()!!.hits.map { it.recipe }
-//                updateRecyclerView(recipes)
-//            } else {
-//                // error
-//            }
-//        }
-
-
     private fun updateRecyclerView(recipes: List<Recipe>) {
         recyclerView.adapter = RecipeAdapter(recipes)
     }
@@ -160,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
     class RecipeAdapter(private val recipes: List<Recipe>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
         class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val titleTextView: TextView = view.findViewById(R.id.recipeTitleTextView)
+            //val titleTextView: TextView = view.findViewById(R.id.recipeTitleTextView)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
@@ -171,7 +149,7 @@ class HomeActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
             val recipe = recipes[position]
-            holder.titleTextView.text = recipe.label
+            //holder.titleTextView.text = recipe.label
         }
 
         override fun getItemCount() = recipes.size

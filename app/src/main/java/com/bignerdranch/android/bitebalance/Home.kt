@@ -1,6 +1,5 @@
 package com.bignerdranch.android.bitebalance
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +24,7 @@ class Home : Fragment() {
     private lateinit var myAdapter: MyAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreate(savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         recyclerView = view.findViewById(R.id.recyclerView)
@@ -32,8 +32,13 @@ class Home : Fragment() {
 
         // Sample data
         val items = listOf(
-            DataModel.MyItem(R.drawable.my_image, "Recipe 1"),
-            DataModel.MyItem(R.drawable.my_image, "Recipe 2")
+            DataModel.MyItem(R.drawable.app_icon, "Recipe 1"),
+            DataModel.MyItem(R.drawable.app_icon, "Recipe 2"),
+            DataModel.MyItem(R.drawable.app_icon, "Recipe 3"),
+            DataModel.MyItem(R.drawable.app_icon, "Recipe 4"),
+            DataModel.MyItem(R.drawable.app_icon, "Recipe 5"),
+            DataModel.MyItem(R.drawable.app_icon, "Recipe 6")
+
             // ... more items
         )
 
