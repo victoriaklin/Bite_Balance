@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
 
-        val signOut = findViewById<Button>(R.id.signOutButton)
+        val signOut = findViewById<Button>(R.id.signOut)
         signOut.setOnClickListener{
             val message = Toast.makeText(this, "You have been signed out", Toast.LENGTH_LONG)
             message.setGravity(Gravity.CENTER, 0, 0)
