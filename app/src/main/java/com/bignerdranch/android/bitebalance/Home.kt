@@ -31,11 +31,11 @@ class Home : Fragment() {
         myAdapter = RecipeAdapter(requireContext(), emptyList()) { recipe ->
             openRecipeDetailsFragment(recipe)
         }
-
         recyclerView.adapter = myAdapter
         loadDataBasedOnState()
         return view
     }
+
 
     private fun loadDataBasedOnState() {
         when (recipeViewModel.getCurrentState()) {
@@ -73,18 +73,15 @@ class Home : Fragment() {
         else{
             showRecipesFromDatabase()
         }
+        refreshData()
     }
 
     private fun refreshData() {
-        when (recipeViewModel.getCurrentState()) {
-            RecipeViewModel.ViewState.HOME,
-            RecipeViewModel.ViewState.SEARCH -> {
-                showRecipesFromViewModel()
+        if (recipeViewModel.getCurrentState() == RecipeViewModel.ViewState.HOME ||
+            recipeViewModel.getCurrentState() == RecipeViewModel.ViewState.SEARCH) {
+            recipeViewModel.recipes.value?.let { recipes ->
+                myAdapter.updateRecipes(recipes)
             }
-            RecipeViewModel.ViewState.SAVED_RECIPES -> {
-                showRecipesFromDatabase()
-            }
-            else -> {}
         }
     }
 

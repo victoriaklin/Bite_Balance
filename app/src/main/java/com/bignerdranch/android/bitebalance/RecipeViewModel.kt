@@ -98,6 +98,7 @@ class RecipeViewModel : ViewModel() {
                         /*if (fetchedRecipes != null) {
                             _recipes.postValue(fetchedRecipes)
                         }*/
+                        _recipes.postValue(recipesForApi)
                     } else {
                         // If API call fails do this
                         Log.e(
