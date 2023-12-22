@@ -14,6 +14,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RecipeViewModel : ViewModel() {
+    enum class ViewState {
+        HOME, SEARCH, SAVED_RECIPES
+    }
+
+    private var currentState: ViewState = ViewState.HOME
+
+    fun setCurrentState(state: ViewState) {
+        currentState = state
+    }
+
+    fun getCurrentState(): ViewState {
+        return currentState
+    }
 
     companion object {
         private const val APP_ID = "b849eb52"
@@ -39,7 +52,7 @@ class RecipeViewModel : ViewModel() {
                         val apiResponse = response.body()!!
                         val stringBuilder = StringBuilder()
 
-                        val recipesForDb = apiResponse.hits.map { hit ->
+                        val recipesForApi = apiResponse.hits.map { hit ->
                             Recipes(
                                 label = hit.recipe.label,
                                 image = hit.recipe.image,
@@ -63,31 +76,28 @@ class RecipeViewModel : ViewModel() {
                                 tags = hit.recipe.tags ?: emptyList()
                             )
                         }
-                        // Insert into database
-                        MyApplication.db?.let { db ->
+
+                        // Update LiveData with new recipes
+                        withContext(Dispatchers.Main) {
+                            _recipes.value = recipesForApi
+                        }
+                        // Insert into database ONLY if saved
+                       /* MyApplication.db?.let { db ->
                             recipesForDb.forEach { recipe ->
                                 db.recipesDao().insertRecipe(recipe)
                             }
-                        }
-
-                        /*apiResponse.hits.forEach { hit ->
-                            val recipe = hit.recipe
-                            val caloriesRounded = recipe.calories.roundToInt()
-                            stringBuilder.append("${recipe.label}: $caloriesRounded calories\n")
                         }*/
 
-                        /*val recipeText =
-                            if (stringBuilder.isNotEmpty()) stringBuilder.toString() else "No recipes found"
-*/
-                        val fetchedRecipes = MyApplication.db?.recipesDao()?.getAllRecipes()
+                        // Gets all saved recipes in database, will use later
+                        /* val fetchedRecipes = MyApplication.db?.recipesDao()?.getAllRecipes()
                         fetchedRecipes?.let { fetchedRecipes ->
                             withContext(Dispatchers.Main) {
                                 _recipes.value = fetchedRecipes
                             }
-                        }
-                        if (fetchedRecipes != null) {
+                        }*/
+                        /*if (fetchedRecipes != null) {
                             _recipes.postValue(fetchedRecipes)
-                        }
+                        }*/
                     } else {
                         // If API call fails do this
                         Log.e(

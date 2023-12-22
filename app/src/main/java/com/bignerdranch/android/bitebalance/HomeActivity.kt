@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -36,7 +37,6 @@ class HomeActivity : AppCompatActivity() {
     //private lateinit var recyclerView: RecyclerView
     //private lateinit var searchView: SearchView
     //private lateinit var recipeButton: Button
-    private lateinit var textViewRecipe: TextView
     private lateinit var binding : ActivityHomeBinding
     private lateinit var recipeViewModel: RecipeViewModel
 
@@ -45,15 +45,16 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(Home())
         recipeViewModel = ViewModelProvider(this)[RecipeViewModel::class.java]
+
+
+        navigateToFragment(Home(), RecipeViewModel.ViewState.HOME, "")
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.savedRecipes -> replaceFragment(SavedRecipes())
-                R.id.home -> replaceFragment(Home())
-                R.id.search -> replaceFragment(Search())
-
+                R.id.savedRecipes -> navigateToFragment(Home(), RecipeViewModel.ViewState.SAVED_RECIPES, "Home")
+                R.id.home -> navigateToFragment(Home(), RecipeViewModel.ViewState.HOME, "Home")
+                R.id.search -> navigateToFragment(Search(), RecipeViewModel.ViewState.SEARCH, "Search")
                 else -> false
             }
             true
@@ -90,10 +91,24 @@ class HomeActivity : AppCompatActivity() {
         //updateRecyclerViewFromDB()
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayout, fragment)
-            .commit()
+    private fun navigateToFragment(fragment: Fragment, state: RecipeViewModel.ViewState, tag: String) {
+        recipeViewModel.setCurrentState(state)
+        supportFragmentManager.beginTransaction().apply {
+            // Reuse the existing fragment if it's already added
+            val existingFragment = supportFragmentManager.findFragmentByTag(tag)
+            if (existingFragment != null) {
+                show(existingFragment)
+            } else {
+                add(R.id.frameLayout, fragment, tag)
+            }
+            // Hide other fragments
+            supportFragmentManager.fragments.forEach {
+                if (it != existingFragment && it.isAdded) {
+                    hide(it)
+                }
+            }
+            commit()
+        }
     }
 
     private fun onRecipeButtonClick() {
@@ -207,31 +222,18 @@ class HomeActivity : AppCompatActivity() {
 class RecipeAdapter(private val context: Context, private var recipes: List<Recipes>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleTextView: TextView = view.findViewById(R.id.tvHeading)
-        val imageView: ShapeableImageView = view.findViewById(R.id.title_image)
+        val imageView: ImageView = view.findViewById(R.id.title_image)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         holder.titleTextView.text = recipe.label
         // Load image into imageView
-        val imageUrl = recipe.imageUrl
+        val imageUrl = recipe.image
         if (!imageUrl.isNullOrEmpty()) {
             // Using Glide to load the image
             Glide.with(context)
                 .load(imageUrl)
-                .placeholder(android.R.drawable.stat_sys_warning)
-                .error(android.R.drawable.stat_notify_error)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        Log.e("Glide", "Image loading failed for URL: $imageUrl", e)
-                        return false
-                    }
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        Log.d("Glide", "Image loaded for URL: $imageUrl")
-                        return false
-                    }
-                })
                 .into(holder.imageView)
         }
     }
