@@ -5,46 +5,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Home.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Home : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var myAdapter: MyAdapter
+    private lateinit var myAdapter: RecipeAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreate(savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-
-        // Sample data
-        val items = listOf(
-            DataModel.MyItem(R.drawable.app_icon, "Recipe 1"),
-            DataModel.MyItem(R.drawable.app_icon, "Recipe 2"),
-            DataModel.MyItem(R.drawable.app_icon, "Recipe 3"),
-            DataModel.MyItem(R.drawable.app_icon, "Recipe 4"),
-            DataModel.MyItem(R.drawable.app_icon, "Recipe 5"),
-            DataModel.MyItem(R.drawable.app_icon, "Recipe 6")
-
-            // ... more items
-        )
-
-        myAdapter = MyAdapter(items)
+        myAdapter = RecipeAdapter(requireContext(), emptyList())
         recyclerView.adapter = myAdapter
 
+        // Get ViewModel
+        val recipeViewModel = ViewModelProvider(requireActivity()).get(RecipeViewModel::class.java)
+        recipeViewModel.recipes.observe(viewLifecycleOwner) { newRecipes ->
+            // Update the adapter
+            myAdapter.updateRecipes(newRecipes)
+        }
+        updateRecyclerViewFromDB()
+
         return view
+    }
+
+    private fun updateRecyclerViewFromDB() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val recipes = MyApplication.db?.recipesDao()?.getAllRecipes()
+            recipes?.let {
+                withContext(Dispatchers.Main) {
+                    myAdapter.updateRecipes(it)
+                }
+            }
+        }
     }
 }

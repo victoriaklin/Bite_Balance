@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
 
-        val signOut = findViewById<Button>(R.id.signOut)
+       /* val signOut = findViewById<Button>(R.id.signOut)
         signOut.setOnClickListener{
             val message = Toast.makeText(this, "You have been signed out", Toast.LENGTH_LONG)
             message.setGravity(Gravity.CENTER, 0, 0)
@@ -25,18 +25,18 @@ class SettingsActivity : AppCompatActivity() {
             val openMainPage = Intent(this, MainActivity::class.java)
             startActivity(openMainPage)
         }
-
+*/
         val back = findViewById<ImageView>(R.id.backButton)
         back.setOnClickListener{
             val openHomePage = Intent(this, HomeActivity::class.java)
             startActivity(openHomePage)
         }
-
-        val change = findViewById<TextView>(R.id.change_dietary)
-        change.setOnClickListener {
-            val openDietary = Intent(this, FoodRestrictionActivity::class.java)
-            startActivity(openDietary)
-        }
+//
+//        val change = findViewById<TextView>(R.id.change_dietary)
+//        change.setOnClickListener {
+//            val openDietary = Intent(this, FoodRestrictionActivity::class.java)
+//            startActivity(openDietary)
+//        }
 
     }
 
