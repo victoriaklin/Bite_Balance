@@ -1,6 +1,7 @@
 package com.bignerdranch.android.bitebalance
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,10 @@ class Home : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        myAdapter = RecipeAdapter(requireContext(), emptyList())
+        myAdapter = RecipeAdapter(requireContext(), emptyList()) { recipe ->
+            openRecipeDetailsFragment(recipe)
+        }
+
         recyclerView.adapter = myAdapter
         loadDataBasedOnState()
         return view
@@ -35,16 +39,6 @@ class Home : Fragment() {
 
     private fun loadDataBasedOnState() {
         when (recipeViewModel.getCurrentState()) {
-            RecipeViewModel.ViewState.HOME,
-            RecipeViewModel.ViewState.SEARCH -> showRecipesFromViewModel()
-            RecipeViewModel.ViewState.SAVED_RECIPES -> showRecipesFromDatabase()
-            else -> {}
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        when (recipeViewModel?.getCurrentState()) {
             RecipeViewModel.ViewState.HOME -> showRecipesFromViewModel()
             RecipeViewModel.ViewState.SEARCH -> showRecipesFromViewModel()
             RecipeViewModel.ViewState.SAVED_RECIPES -> showRecipesFromDatabase()
@@ -52,12 +46,54 @@ class Home : Fragment() {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         recipeViewModel.recipes.observe(viewLifecycleOwner) { newRecipes ->
             myAdapter.updateRecipes(newRecipes)
         }
-        loadDataBasedOnState()
+        myAdapter = RecipeAdapter(requireContext(), emptyList()) { recipe ->
+            openRecipeDetailsFragment(recipe)
+        }
+    }
+    private fun openRecipeDetailsFragment(recipe: Recipes) {
+        val fragment = ClickedRecipeFragment.newInstance(recipe)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout, fragment)
+            .addToBackStack(null) // to enable back navigation
+            .commit()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (recipeViewModel.getCurrentState() == RecipeViewModel.ViewState.HOME ||
+            recipeViewModel.getCurrentState() == RecipeViewModel.ViewState.SEARCH) {
+            showRecipesFromViewModel()
+        }
+        else{
+            showRecipesFromDatabase()
+        }
+    }
+
+    private fun refreshData() {
+        when (recipeViewModel.getCurrentState()) {
+            RecipeViewModel.ViewState.HOME,
+            RecipeViewModel.ViewState.SEARCH -> {
+                showRecipesFromViewModel()
+            }
+            RecipeViewModel.ViewState.SAVED_RECIPES -> {
+                showRecipesFromDatabase()
+            }
+            else -> {}
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        recipeViewModel.recipes.removeObservers(viewLifecycleOwner)
+        recipeViewModel.recipes.observe(viewLifecycleOwner) { newRecipes ->
+            myAdapter.updateRecipes(newRecipes)
+        }
     }
 
 
@@ -79,34 +115,26 @@ class Home : Fragment() {
     }
 
     fun showRecipesFromViewModel() {
-        if (!::recipeViewModel.isInitialized) {
-            recipeViewModel.recipes.observe(viewLifecycleOwner) { newRecipes ->
-                myAdapter.updateRecipes(newRecipes)
-            }
+        recipeViewModel.recipes.value?.let { newRecipes ->
+            myAdapter.updateRecipes(newRecipes)
         }
-            else{
-                recipeViewModel.recipes.observe(viewLifecycleOwner) { newRecipes ->
-                    myAdapter.updateRecipes(newRecipes)
-                }
-            }
-
     }
+
+
+    fun loadSavedRecipes() {
+        recipeViewModel.setCurrentState(RecipeViewModel.ViewState.SAVED_RECIPES)
+        showRecipesFromDatabase()
+    }
+
+
 
     fun showRecipesFromDatabase() {
-        if (!::recipeViewModel.isInitialized) {
-            recipeViewModel.recipes.observe(viewLifecycleOwner) { newRecipes ->
-                myAdapter.updateRecipes(newRecipes)
-            }
-        }
-        else {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val recipes = MyApplication.db?.recipesDao()?.getAllRecipes()
-                recipes?.let {
-                    withContext(Dispatchers.Main) {
-                        myAdapter.updateRecipes(it)
-                    }
-                }
+        lifecycleScope.launch(Dispatchers.IO) {
+            val recipesFromDB = MyApplication.db?.recipesDao()?.getAllRecipes() ?: emptyList()
+            withContext(Dispatchers.Main) {
+                myAdapter.updateRecipes(recipesFromDB)
             }
         }
     }
+
 }

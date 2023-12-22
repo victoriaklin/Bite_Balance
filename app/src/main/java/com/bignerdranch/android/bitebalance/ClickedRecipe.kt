@@ -26,7 +26,6 @@ class RecipeFragment : Fragment() {
         recipeIngredients = view.findViewById(R.id.ingredients)
         recipeInstructions = view.findViewById(R.id.instructions)
 
-        // Populate the views with your data
 
         return view
     }

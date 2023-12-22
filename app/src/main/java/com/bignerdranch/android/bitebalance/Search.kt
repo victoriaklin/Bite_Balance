@@ -42,12 +42,9 @@ class Search : Fragment() {
     }
 
     private fun navigateToHomeFragment() {
-        // Set the ViewModel state to reflect that we are going back to Home
         recipeViewModel.setCurrentState(RecipeViewModel.ViewState.HOME)
 
-        val homeFragment = requireActivity().supportFragmentManager.findFragmentByTag("Home")
-            ?: Home() // Create a new instance only if it doesn't exist
-
+        val homeFragment = Home()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, homeFragment, "Home")
             .commit()

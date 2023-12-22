@@ -23,6 +23,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import androidx.room.Query as rQuery
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 
 private const val BASE_URL = "https://api.edamam.com/api/recipes/v2/"
@@ -113,29 +116,30 @@ data class Digest(
 
 @Entity(tableName = "recipes")
 @TypeConverters(Converters::class)
+@Parcelize
 data class Recipes(
     @PrimaryKey(autoGenerate = true) val dbId: Long = 0,
     val label: String,
     val image: String,
-    val images: Images?,
+    val images: @RawValue Images?,
     val source: String,
     val url: String,
-    val dietLabels: List<String>?,
-    val healthLabels: List<String>?,
-    val cautions: List<String>?,
-    val ingredientLines: List<String>?,
-    val ingredients: List<Ingredients>?,
+    val dietLabels: @RawValue List<String>?,
+    val healthLabels: @RawValue List<String>?,
+    val cautions: @RawValue List<String>?,
+    val ingredientLines: @RawValue List<String>?,
+    val ingredients: @RawValue List<Ingredients>?,
     val calories: Float,
     val totalWeight: Float,
     val totalTime: Int,
-    val cuisineType: List<String>?,
-    val mealType: List<String>?,
-    val dishType: List<String>?,
-    val totalNutrients: TotalNutrients?,
-    val totalDaily: TotalNutrients?,
-    val digest: List<Digest>?,
-    val tags: List<String>?,
-){
+    val cuisineType: @RawValue List<String>?,
+    val mealType: @RawValue List<String>?,
+    val dishType: @RawValue List<String>?,
+    val totalNutrients: @RawValue TotalNutrients?,
+    val totalDaily: @RawValue TotalNutrients?,
+    val digest: @RawValue List<Digest>?,
+    val tags: @RawValue List<String>?,
+): Parcelable {
     val imageUrl: String?
         get() = images?.thumbnail?.url
 }

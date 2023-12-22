@@ -94,22 +94,26 @@ class HomeActivity : AppCompatActivity() {
     private fun navigateToFragment(fragment: Fragment, state: RecipeViewModel.ViewState, tag: String) {
         recipeViewModel.setCurrentState(state)
         supportFragmentManager.beginTransaction().apply {
-            // Reuse the existing fragment if it's already added
-            val existingFragment = supportFragmentManager.findFragmentByTag(tag)
-            if (existingFragment != null) {
-                show(existingFragment)
+            var existingFragment = supportFragmentManager.findFragmentByTag(tag)
+            if (existingFragment == null) {
+                existingFragment = fragment
+                add(R.id.frameLayout, existingFragment, tag)
             } else {
-                add(R.id.frameLayout, fragment, tag)
+                // Specific handling for Home fragment when in SAVED_RECIPES state
+                if (state == RecipeViewModel.ViewState.SAVED_RECIPES && existingFragment is Home) {
+                    existingFragment.loadSavedRecipes()
+                }
             }
-            // Hide other fragments
             supportFragmentManager.fragments.forEach {
                 if (it != existingFragment && it.isAdded) {
                     hide(it)
                 }
             }
+            show(existingFragment)
             commit()
         }
     }
+
 
     private fun onRecipeButtonClick() {
         recipeViewModel.fetchRecipes("")
@@ -219,7 +223,7 @@ class HomeActivity : AppCompatActivity() {
     }*/
 }
 
-class RecipeAdapter(private val context: Context, private var recipes: List<Recipes>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private val context: Context, private var recipes: List<Recipes>, private val itemClickListener: (Recipes) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
     class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleTextView: TextView = view.findViewById(R.id.tvHeading)
         val imageView: ImageView = view.findViewById(R.id.title_image)
@@ -228,13 +232,10 @@ class RecipeAdapter(private val context: Context, private var recipes: List<Reci
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
         holder.titleTextView.text = recipe.label
-        // Load image into imageView
-        val imageUrl = recipe.image
-        if (!imageUrl.isNullOrEmpty()) {
-            // Using Glide to load the image
-            Glide.with(context)
-                .load(imageUrl)
-                .into(holder.imageView)
+        Glide.with(context).load(recipe.image).into(holder.imageView)
+
+        holder.itemView.setOnClickListener {
+            itemClickListener(recipe)
         }
     }
 
