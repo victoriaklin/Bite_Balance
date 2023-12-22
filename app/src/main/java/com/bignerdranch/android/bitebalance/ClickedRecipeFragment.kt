@@ -31,7 +31,11 @@ class ClickedRecipeFragment : Fragment() {
         recipe?.let {
             recipeNameTextView.text = it.label
             Glide.with(this).load(it.image).into(recipeImageView)
-            // Set ingredients and instructions text here
+
+            val ingredientsText =
+                it.ingredientLines?.joinToString(separator = "\n") // Each ingredient in a new line
+            ingredientsTextView.text = ingredientsText
+
         }
 
         return view
